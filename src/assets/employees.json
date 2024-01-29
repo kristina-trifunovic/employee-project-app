@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "firstName": "Benny",
+    "lastName": "Wolowitz",
+    "seniority": "Junior"
+  },
+  {
+    "id": 1,
+    "firstName": "Liam",
+    "lastName": "Smith",
+    "seniority": "Medior"
+  },
+  {
+    "id": 2,
+    "firstName": "Olivia",
+    "lastName": "Johnson",
+    "seniority": "Senior"
+  },
+  {
+    "id": 3,
+    "firstName": "",
+    "lastName": "",
+    "seniority": "Senior"
+  },
+  {
+    "id": 4,
+    "firstName": "Noah",
+    "lastName": "Williams",
+    "seniority": "Beginner"
+  },
+  {
+    "id": 5,
+    "firstName": "Aiden",
+    "lastName": "Davis",
+    "seniority": "Junior"
+  }
+]

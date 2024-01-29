@@ -1,7 +1,7 @@
 import { Seniority } from '../enums/enums';
 
 export interface Employee {
-  employeeId: number;
+  id: number;
   firstName: string;
   lastName: string;
   seniority: Seniority;
