@@ -8,6 +8,10 @@ img {
   width: 3em;
 }
 
+img:hover {
+  cursor: pointer;
+}
+
 button {
   display: inline-block;
   text-align: center;

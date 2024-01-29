@@ -20,4 +20,8 @@ export class AppComponent implements OnInit {
   goToProjects() {
     this.router.navigate(['project']);
   }
+
+  homepage() {
+    this.router.navigate(['/']);
+  }
 }

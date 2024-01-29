@@ -10,7 +10,7 @@
 <body>
   <div class="container">
     <div class="col">
-      <img src="assets/eng-logo.svg" alt="">
+      <img src="assets/eng-logo.svg" (click)="homepage()" alt="">
     </div>
     <div class="col">
       <button (click)="goToEmployees()">Employees</button>
@@ -20,3 +20,4 @@
 </body>
 
 </html>
+<router-outlet></router-outlet>
