@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EmployeeService } from './app/core/services/employee.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +9,15 @@ import { EmployeeService } from './app/core/services/employee.service';
 export class AppComponent implements OnInit {
   title = 'employee-project-app';
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    this.employeeService.findAll().subscribe((e) => console.log(e));
+  ngOnInit(): void {}
+
+  goToEmployees() {
+    this.router.navigate(['employee']);
+  }
+
+  goToProjects() {
+    this.router.navigate(['project']);
   }
 }
