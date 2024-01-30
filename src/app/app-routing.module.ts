@@ -10,6 +10,13 @@ const routes: Routes = [
         (e) => e.EmployeesModule
       ),
   },
+  {
+    path: 'project',
+    loadChildren: () =>
+      import('./features/projects/projects.module').then(
+        (e) => e.ProjectsModule
+      ),
+  },
 ];
 
 @NgModule({

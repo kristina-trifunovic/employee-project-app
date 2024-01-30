@@ -1,0 +1,71 @@
+[
+  {
+    "id": "008550",
+    "name": "Primedia",
+    "budget": 150000,
+    "engagedEmployees": [
+      {
+        "employee": {
+          "id": 2,
+          "firstName": "Olivia",
+          "lastName": "Johnson",
+          "seniority": "Senior"
+        },
+        "role": "Team Lead",
+        "startDate": "05.02.2024",
+        "engagementDuration": 36
+      },
+      {
+        "employee": {
+          "id": 5,
+          "firstName": "Aiden",
+          "lastName": "Davis",
+          "seniority": "Junior"
+        },
+        "role": "Developer",
+        "startDate": "20.02.2024",
+        "engagementDuration": 12
+      }
+    ]
+  },
+  {
+    "id": "008551",
+    "name": "Helmets",
+    "budget": 20500,
+    "engagedEmployees": [
+      {
+        "employee": {
+          "id": 3,
+          "firstName": "Isabella",
+          "lastName": "Martinez",
+          "seniority": "Senior"
+        },
+        "role": "Team Lead",
+        "startDate": "23.06.2023",
+        "engagementDuration": 6
+      },
+      {
+        "employee": {
+          "id": 3,
+          "firstName": "Isabella",
+          "lastName": "Martinez",
+          "seniority": "Senior"
+        },
+        "role": "Project Manager",
+        "startDate": "23.12.2023",
+        "engagementDuration": 18
+      },
+      {
+        "employee": {
+          "id": 4,
+          "firstName": "Noah",
+          "lastName": "Williams",
+          "seniority": "Beginner"
+        },
+        "role": "Developer",
+        "startDate": "23.06.2023",
+        "engagementDuration": 24
+      }
+    ]
+  }
+]
