@@ -18,6 +18,7 @@ import { ProjectService } from 'src/app/core/services/project.service';
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
   projects?: Project[];
+  filteredProjects?: Project[];
   employees?: Employee[];
   destroy$: Subject<boolean> = new Subject();
   projectForm?: FormGroup;
@@ -34,6 +35,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadProjects();
     this.loadEmployees();
+    this.filterProjects();
   }
 
   ngOnDestroy(): void {
@@ -47,6 +49,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((projects) => {
         this.projects = projects;
+        this.filteredProjects = [...this.projects];
       });
   }
 
@@ -69,8 +72,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   validateBudgetTo(formControl: FormControl) {
-    console.log(formControl);
-
     const budgetFromValue = this.projectForm?.get('budgetFrom')?.value;
     const budgetToValue = formControl.value;
 
@@ -84,7 +85,60 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     return null;
   }
 
+  filterProjects() {
+    this.projectForm?.valueChanges.subscribe(() => {
+      this.filter();
+    });
+  }
+
+  filter() {
+    const filterData = {
+      name: this.projectForm?.get('name')?.value,
+      budgetFrom: this.projectForm?.get('budgetFrom')?.value,
+      budgetTo: this.projectForm?.get('budgetTo')?.value,
+      employee: this.projectForm?.get('employee')?.value,
+    };
+    if (this.isFilterEmpty(filterData))
+      this.filteredProjects = [...this.projects!];
+    else this.filterList(filterData);
+  }
+
   compareEmployee(first?: Employee, second?: Employee): boolean {
     return first?.id === second?.id;
+  }
+
+  isFilterEmpty(filterData: {
+    name: string;
+    employee: Employee;
+    budgetFrom: number;
+    budgetTo: number;
+  }) {
+    return (
+      filterData.name === '' &&
+      (filterData.employee == null || filterData.employee == undefined) &&
+      isNaN(filterData.budgetFrom) &&
+      isNaN(filterData.budgetTo)
+    );
+  }
+
+  filterList(filterData: {
+    name: string;
+    employee: Employee;
+    budgetFrom: number;
+    budgetTo: number;
+  }) {
+    this.filteredProjects = this.projects?.filter(
+      (project) =>
+        project.name.toLowerCase().includes(filterData.name.toLowerCase()) &&
+        project.budget >= filterData.budgetFrom &&
+        (project.budget <= filterData.budgetTo ||
+          filterData.budgetTo.toString() == '') &&
+        (project.engagedEmployees.findIndex(
+          (pd) =>
+            pd.employee.id ===
+            (filterData.employee != undefined ? filterData.employee['id'] : -1)
+        ) != -1 ||
+          filterData.employee == null)
+    );
   }
 }

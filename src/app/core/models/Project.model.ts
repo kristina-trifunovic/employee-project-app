@@ -6,7 +6,7 @@ export interface Project {
   name: string;
   budget: number;
   startDate: Date;
-  engagedEmployees: ProjectDescription;
+  engagedEmployees: ProjectDescription[];
 }
 
 export interface ProjectDescription {

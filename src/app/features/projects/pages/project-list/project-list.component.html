@@ -1,37 +1,44 @@
-<form [formGroup]="projectForm" *ngIf="projectForm">
-  <div>
-    <label for="name">Name</label>
-    <input type="text" name="name" placeholder="Filter by name" formControlName="name">
+<div class="flex">
+  <div class="x">
+    <form [formGroup]="projectForm" *ngIf="projectForm">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" placeholder="Filter by name" formControlName="name">
+      </div>
+      <div>
+        <label for="name">Budget</label>
+        <input type="number" name="budget" placeholder="From" formControlName="budgetFrom">
+        <input type="number" name="budget" placeholder="To" formControlName="budgetTo">
+      </div>
+      <div>
+        <label for="name">Employees</label>
+        <select formControlName="employees" [compareWith]="compareEmployee">
+          <option value="" selected [style]="'color: grey;'">Select Employee</option>
+          <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " +
+            employee.lastName}}
+          </option>
+        </select>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="name">Budget</label>
-    <input type="number" name="budget" placeholder="From" formControlName="budgetFrom">
-    <input type="number" name="budget" placeholder="To" formControlName="budgetTo">
+  <div class="x">
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Budget</th>
+      </tr>
+      <tr *ngFor="let project of filteredProjects">
+        <td>{{project.id}}</td>
+        <td>{{project.name}}</td>
+        <!-- TODO add a pipe for currency -->
+        <td>{{project.budget}}</td>
+        <td>
+          <button></button>
+          <button></button>
+          <button></button>
+        </td>
+      </tr>
+    </table>
   </div>
-  <div>
-    <label for="name">Employees</label>
-    <select formControlName="employees" [compareWith]="compareEmployee">
-      <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " + employee.lastName}}
-      </option>
-    </select>
-  </div>
-</form>
-
-<table>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Budget</th>
-  </tr>
-  <tr *ngFor="let project of projects">
-    <td>{{project.id}}</td>
-    <td>{{project.name}}</td>
-    <!-- TODO add a pipe for currency -->
-    <td>{{project.budget}}</td>
-    <td>
-      <button></button>
-      <button></button>
-      <button></button>
-    </td>
-  </tr>
-</table>
+</div>
