@@ -1,1 +1,36 @@
-<p>project-form works!</p>
+<form [formGroup]="projectForm" *ngIf="projectForm" (ngSubmit)="onSubmit()">
+  <label for="name">Name:</label>
+  <input type="text" id="name" formControlName="name">
+
+  <label for="budget">Budget:</label>
+  <input type="number" id="budget" formControlName="budget">
+
+  <label for="startDate">Start Date:</label>
+  <input type="date" id="startDate" formControlName="startDate">
+
+  <div formArrayName="engagedEmployees">
+    <div *ngFor="let projectDescription of engagedEmployees.controls; let i = index" [formGroupName]="i">
+      <select formControlName="employee" [compareWith]="compareEmployee" (ngModelChange)="filterRoles($event)">
+        <option value="" selected [style]="'color: grey;'">Select Employee</option>
+        <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " +
+          employee.lastName}}
+        </option>
+      </select>
+      <select formControlName="role" (ngModelChange)="filterEmployees($event)">
+        <option value="" selected [style]="'color: grey;'">Select Role</option>
+        <option *ngFor="let role of filteredRoles" [ngValue]="role">{{ role }}
+        </option>
+      </select>
+      <label for="startDate">Start date:</label>
+      <input type="date" id="startDate" formControlName="startDate">
+      <label for="engagementDuration">Engagement duration:</label>
+      <input type="number" id="engagementDuration" formControlName="engagementDuration">
+      <button type="button" (click)="addEngagedEmployee()">Add employee info</button>
+      <button type="button" (click)="removeEngagedEmployee(i)" [disabled]="engagedEmployees.length === 1">Remove
+        employee
+        info</button>
+    </div>
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

@@ -93,6 +93,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   filterProjects() {
     this.projectForm?.valueChanges
       .pipe(distinctUntilChanged())
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.filter();
       });
