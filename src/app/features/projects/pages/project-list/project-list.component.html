@@ -12,7 +12,7 @@
       </div>
       <div>
         <label for="name">Employees</label>
-        <select formControlName="employees" [compareWith]="compareEmployee">
+        <select formControlName="employee" [compareWith]="compareEmployee">
           <option value="" selected [style]="'color: grey;'">Select Employee</option>
           <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " +
             employee.lastName}}

@@ -22,7 +22,12 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   employees?: Employee[];
   destroy$: Subject<boolean> = new Subject();
   projectForm?: FormGroup;
-  mode = '';
+  filterData?: {
+    name: string;
+    budgetFrom: number;
+    budgetTo: number;
+    employee: Employee;
+  };
 
   constructor(
     private projectService: ProjectService,
@@ -67,7 +72,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       name: ['', [Validators.minLength(2), Validators.maxLength(30)]],
       budgetFrom: ['', [Validators.min(0)]],
       budgetTo: ['', [Validators.min(0), this.validateBudgetTo.bind(this)]],
-      employees: [''],
+      employee: [''],
     });
   }
 
@@ -92,53 +97,48 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   filter() {
-    const filterData = {
+    this.filterData = {
       name: this.projectForm?.get('name')?.value,
       budgetFrom: this.projectForm?.get('budgetFrom')?.value,
       budgetTo: this.projectForm?.get('budgetTo')?.value,
       employee: this.projectForm?.get('employee')?.value,
     };
-    if (this.isFilterEmpty(filterData))
-      this.filteredProjects = [...this.projects!];
-    else this.filterList(filterData);
+    if (this.isFilterEmpty()) this.filteredProjects = [...this.projects!];
+    else this.filterList();
   }
 
   compareEmployee(first?: Employee, second?: Employee): boolean {
     return first?.id === second?.id;
   }
 
-  isFilterEmpty(filterData: {
-    name: string;
-    employee: Employee;
-    budgetFrom: number;
-    budgetTo: number;
-  }) {
+  isFilterEmpty() {
     return (
-      filterData.name === '' &&
-      (filterData.employee == null || filterData.employee == undefined) &&
-      isNaN(filterData.budgetFrom) &&
-      isNaN(filterData.budgetTo)
+      this.filterData?.name === '' &&
+      (this.filterData.employee == null ||
+        this.filterData.employee == undefined) &&
+      this.filterData.budgetFrom.toString() === '' &&
+      this.filterData.budgetTo.toString() === ''
     );
   }
 
-  filterList(filterData: {
-    name: string;
-    employee: Employee;
-    budgetFrom: number;
-    budgetTo: number;
-  }) {
-    this.filteredProjects = this.projects?.filter(
-      (project) =>
-        project.name.toLowerCase().includes(filterData.name.toLowerCase()) &&
-        project.budget >= filterData.budgetFrom &&
-        (project.budget <= filterData.budgetTo ||
-          filterData.budgetTo.toString() == '') &&
-        (project.engagedEmployees.findIndex(
-          (pd) =>
-            pd.employee.id ===
-            (filterData.employee != undefined ? filterData.employee['id'] : -1)
-        ) != -1 ||
-          filterData.employee == null)
-    );
+  filterList() {
+    this.filteredProjects = this.projects?.filter((project) => {
+      const nameCheck =
+        project.name
+          .toLowerCase()
+          .includes(this.filterData!.name.toLowerCase()) &&
+        this.filterData!.name != '';
+      const budgetFromCheck =
+        project.budget >= this.filterData!.budgetFrom &&
+        this.filterData!.budgetFrom.toString() != '';
+      const budgetToCheck =
+        project.budget <= this.filterData!.budgetTo &&
+        this.filterData!.budgetTo.toString() != '';
+      const employeeCheck =
+        project.engagedEmployees.findIndex(
+          (projDesc) => projDesc.employee.id === this.filterData?.employee['id']
+        ) != -1;
+      return nameCheck || budgetFromCheck || budgetToCheck || employeeCheck;
+    });
   }
 }
