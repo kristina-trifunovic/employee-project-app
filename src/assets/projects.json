@@ -3,6 +3,7 @@
     "id": "008550",
     "name": "Primedia",
     "budget": 150000,
+    "startDate": "05.02.2024",
     "engagedEmployees": [
       {
         "employee": {
@@ -32,6 +33,7 @@
     "id": "008551",
     "name": "Helmets",
     "budget": 20500,
+    "startDate": "23.06.2023",
     "engagedEmployees": [
       {
         "employee": {

@@ -72,7 +72,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       name: ['', [Validators.minLength(2), Validators.maxLength(30)]],
       budgetFrom: [null, [Validators.min(0)]],
       budgetTo: [null, [Validators.min(0), this.validateBudgetTo.bind(this)]],
-      employee: [''],
+      employee: [null],
     });
   }
 
@@ -136,6 +136,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         project.budget <= this.filterData!.budgetTo ||
         this.filterData!.budgetTo === null;
       const employeeCheck =
+        this.filterData!.employee === null ||
         project.engagedEmployees.findIndex(
           (projDesc) => projDesc.employee.id === this.filterData?.employee['id']
         ) != -1;

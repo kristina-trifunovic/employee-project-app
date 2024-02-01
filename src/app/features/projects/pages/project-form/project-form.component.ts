@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Component, Inject, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,7 +9,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { ProjectRole, Seniority } from 'src/app/core/enums/enums';
+import { Mode, ProjectRole, Seniority } from 'src/app/core/enums/enums';
 import { Employee } from 'src/app/core/models/Employee.model';
 import { Project, ProjectDescription } from 'src/app/core/models/Project.model';
 import { EmployeeService } from 'src/app/core/services/employee.service';
@@ -35,7 +36,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(LOCALE_ID) public locale: string
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((employees) => {
         this.employees = employees;
+        this.filteredEmployees = employees;
       });
   }
 
@@ -106,7 +109,18 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.projectForm?.value);
+    const project = this.projectForm?.value;
+    console.log(project);
+    this.addOrUpdateProject(project).subscribe((project) => {
+      console.log(`${this.mode} mode project: `, project);
+      this.router.navigate(['project']);
+    });
+  }
+
+  addOrUpdateProject(project: Project) {
+    return this.mode === Mode.ADD
+      ? this.projectService.addProject(project)
+      : this.projectService.updateProject(project);
   }
 
   validateStartDate(formControl: FormControl) {
@@ -134,7 +148,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       );
   }
 
-  // TODO fix this filter
   filterEmployees(role: ProjectRole) {
     if (role === ProjectRole.PROJECT_MANAGER || role === ProjectRole.TEAM_LEAD)
       this.filteredEmployees = this.employees!.filter(

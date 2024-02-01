@@ -11,3 +11,8 @@ export enum ProjectRole {
   DEVELOPER = 'Developer',
   BUSINESS_ANALYST = 'Business Analyst',
 }
+
+export enum Mode {
+  ADD = 'ADD',
+  UPDATE = 'UPDATE',
+}

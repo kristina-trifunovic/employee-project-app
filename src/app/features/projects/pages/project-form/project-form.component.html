@@ -12,7 +12,7 @@
     <div *ngFor="let projectDescription of engagedEmployees.controls; let i = index" [formGroupName]="i">
       <select formControlName="employee" [compareWith]="compareEmployee" (ngModelChange)="filterRoles($event)">
         <option value="" selected [style]="'color: grey;'">Select Employee</option>
-        <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " +
+        <option *ngFor="let employee of filteredEmployees" [ngValue]="employee">{{employee.firstName + " " +
           employee.lastName}}
         </option>
       </select>

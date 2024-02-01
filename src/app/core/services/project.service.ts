@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Project } from '../models/Project.model';
 
@@ -25,7 +25,7 @@ export class ProjectService {
   addProject(project: Project): Observable<Project | undefined> {
     let projects = JSON.parse(this.storage.getItem('projects')!);
     projects.push(project);
-    this.storage.setItem('projects', projects);
+    this.storage.setItem('projects', JSON.stringify(projects));
     return this.findById(project.id);
   }
 
@@ -35,6 +35,12 @@ export class ProjectService {
     projects.splice(index, 1, project);
     this.storage.setItem('projects', JSON.stringify(projects));
     return this.findById(project.id);
+  }
+
+  deleteProject(id: number) {
+    let projects: Project[] = JSON.parse(this.storage.getItem('projects')!);
+    projects.splice(id, 1);
+    this.storage.setItem('projects', JSON.stringify(projects));
   }
 
   get storage() {
