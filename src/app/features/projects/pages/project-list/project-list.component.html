@@ -34,11 +34,24 @@
         <!-- TODO add a pipe for currency -->
         <td>{{project.budget}}</td>
         <td>
-          <button></button>
-          <button></button>
-          <button></button>
+          <button (click)="update(project)">Update</button>
+          <button (click)="view(project)">View</button>
+          <button (click)="remove(project)">Remove</button>
         </td>
       </tr>
     </table>
+  </div>
+</div>
+
+<div class="modal-overlay" [ngClass]="{ 'show': showModal }">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Modal Title</h2>
+      <span class="close-button" (click)="closeModal()">X</span>
+    </div>
+    <div class="modal-content">
+      <!-- Your modal content goes here -->
+      <p>This is your modal content.</p>
+    </div>
   </div>
 </div>

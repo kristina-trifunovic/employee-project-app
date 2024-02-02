@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { Employee } from 'src/app/core/models/Employee.model';
 import { Project } from 'src/app/core/models/Project.model';
@@ -28,11 +29,14 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     budgetTo: number;
     employee: Employee;
   };
+  showModal: boolean = false;
+  showProject?: Project;
 
   constructor(
     private projectService: ProjectService,
     private fb: FormBuilder,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private router: Router
   ) {
     this.buildFilterForm();
   }
@@ -142,5 +146,25 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         ) != -1;
       return nameCheck && budgetFromCheck && budgetToCheck && employeeCheck;
     });
+  }
+
+  update(project: Project) {
+    this.router.navigate([`project/form/${project.id}`]);
+  }
+
+  view(project: Project) {
+    this.showModal = true;
+    this.showProject = project;
+  }
+
+  remove(project: Project) {
+    let i = this.projects?.findIndex((p) => p.id === project.id);
+    this.projectService.deleteProject(project.id).subscribe((i) => {
+      this.projects?.splice(i, 1);
+    });
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

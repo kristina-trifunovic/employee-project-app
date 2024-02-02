@@ -37,10 +37,12 @@ export class ProjectService {
     return this.findById(project.id);
   }
 
-  deleteProject(id: number) {
+  deleteProject(id: string): Observable<number> {
     let projects: Project[] = JSON.parse(this.storage.getItem('projects')!);
-    projects.splice(id, 1);
+    let i = projects.findIndex((p) => p.id === id);
+    projects.splice(i, 1);
     this.storage.setItem('projects', JSON.stringify(projects));
+    return of(i);
   }
 
   get storage() {
