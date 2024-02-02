@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
+import { ProjectRole } from 'src/app/core/enums/enums';
 import { Employee } from 'src/app/core/models/Employee.model';
 import { Project } from 'src/app/core/models/Project.model';
 import { EmployeeService } from 'src/app/core/services/employee.service';
@@ -31,6 +32,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   };
   showModal: boolean = false;
   showProject?: Project;
+  rolesToDisplay = [ProjectRole.PROJECT_MANAGER, ProjectRole.TEAM_LEAD];
 
   constructor(
     private projectService: ProjectService,

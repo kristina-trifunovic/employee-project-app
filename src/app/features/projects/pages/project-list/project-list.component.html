@@ -31,8 +31,7 @@
       <tr *ngFor="let project of filteredProjects">
         <td>{{project.id}}</td>
         <td>{{project.name}}</td>
-        <!-- TODO add a pipe for currency -->
-        <td>{{project.budget}}</td>
+        <td>{{project.budget | currency}}</td>
         <td>
           <button (click)="update(project)">Update</button>
           <button (click)="view(project)">View</button>
@@ -42,6 +41,12 @@
     </table>
   </div>
 </div>
+
+<p><span>{{showProject?.name}}</span>
+  <span>{{showProject?.engagedEmployees | engagedEmployees: rolesToDisplay | json}}</span><br>
+  <span *ngIf="showProject">Num of developers: {{showProject.engagedEmployees | countDevelopers }}</span><br>
+  <span *ngIf="showProject">Num of employees: {{showProject.engagedEmployees | countAnalysts }}</span>
+</p>
 
 <div class="modal-overlay" [ngClass]="{ 'show': showModal }">
   <div class="modal">
