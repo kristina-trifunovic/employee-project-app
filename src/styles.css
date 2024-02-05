@@ -1,1 +1,100 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --dark-blue-color: #002f53;
+}
+
+.flex-row-center {
+  display: flex;
+  /* flex-direction: row;
+  flex-wrap: wrap; */
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.padding-medium {
+  padding: 1rem;
+}
+
+.padding-small {
+  padding: 0.5rem;
+}
+
+input,
+select {
+  border-radius: 0.5rem;
+  border: 1px solid #9e9e9e;
+  padding: 0.5rem 0.2rem;
+  margin: 0.2rem 0.3rem;
+  transition: box-shadow 0.3s;
+}
+
+label {
+  width: 300px;
+  padding: 0.3rem 0.2rem;
+  margin: 0.1rem 0.3rem;
+}
+
+input:hover {
+  box-shadow: 0 0 10px;
+}
+
+select:hover {
+  box-shadow: 0 0 10px;
+}
+
+.flex-row-start {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  padding: 0.5em;
+  margin: 0.2em;
+  border-radius: 0.5rem;
+  border: 1px solid #9e9e9e;
+}
+
+button:hover {
+  background-color: var(--dark-blue-color);
+  color: white;
+  transition: background-color 0.5s, color 0.5s;
+  cursor: pointer;
+}
+
+option:hover {
+  background-color: var(--dark-blue-color);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  text-align: start;
+  padding: 0.4rem 0.2rem;
+}
+
+td {
+  padding: 0.4em;
+}
+
+.header {
+  border-bottom: 1px solid rgb(65, 65, 65);
+}
+
+.data:hover {
+  background-color: rgb(220, 220, 220);
+  transition: background-color 0.2s;
+}
+
+.update:hover {
+  background-color: rgb(59, 95, 83);
+}
+
+.view:hover {
+  background-color: rgb(68, 68, 68);
+}
+
+.delete:hover {
+  background-color: rgb(86, 3, 3);
+}

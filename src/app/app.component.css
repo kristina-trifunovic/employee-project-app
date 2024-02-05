@@ -15,14 +15,7 @@ img:hover {
 button {
   display: inline-block;
   text-align: center;
-  background-color: white;
-  padding: 0.5em;
-  margin: 0.3em;
-  width: 10em;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #002f53;
-  color: white;
+  /* padding: 0.5em;
+  margin: 0.3em; */
+  width: 8em;
 }

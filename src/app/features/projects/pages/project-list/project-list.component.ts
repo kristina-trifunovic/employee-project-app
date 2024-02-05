@@ -76,7 +76,10 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   buildFilterForm() {
     this.projectForm = this.fb.group({
       name: ['', [Validators.minLength(2), Validators.maxLength(30)]],
-      budgetFrom: [null, [Validators.min(0)]],
+      budgetFrom: [
+        null,
+        [Validators.min(0), this.validateBudgetFrom.bind(this)],
+      ],
       budgetTo: [null, [Validators.min(0), this.validateBudgetTo.bind(this)]],
       employee: [null],
     });
@@ -92,6 +95,20 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       budgetToValue < budgetFromValue
     ) {
       return { invalidBudgetTo: true };
+    }
+    return null;
+  }
+
+  validateBudgetFrom(formControl: FormControl) {
+    const budgetToValue = this.projectForm?.get('budgetTo')?.value;
+    const budgetFromValue = formControl.value;
+
+    if (
+      budgetToValue !== null &&
+      budgetFromValue !== null &&
+      budgetFromValue > budgetToValue
+    ) {
+      return { invalidBudgetFrom: true };
     }
     return null;
   }
@@ -131,23 +148,31 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   filterList() {
-    this.filteredProjects = this.projects?.filter((project) => {
-      const nameCheck = project.name
-        .toLowerCase()
-        .includes(this.filterData!.name.toLowerCase());
-      const budgetFromCheck =
-        project.budget >= this.filterData!.budgetFrom ||
-        this.filterData!.budgetFrom === null;
-      const budgetToCheck =
-        project.budget <= this.filterData!.budgetTo ||
-        this.filterData!.budgetTo === null;
-      const employeeCheck =
-        this.filterData!.employee === null ||
-        project.engagedEmployees.findIndex(
-          (projDesc) => projDesc.employee.id === this.filterData?.employee['id']
-        ) != -1;
-      return nameCheck && budgetFromCheck && budgetToCheck && employeeCheck;
-    });
+    if (!this.isFilterEmpty()) {
+      this.filteredProjects = this.projects?.filter((project) => {
+        const nameCheck = project.name
+          .toLowerCase()
+          .includes(this.filterData!.name.toLowerCase());
+        const budgetFromCheck =
+          project.budget >= this.filterData!.budgetFrom ||
+          this.filterData!.budgetFrom === null;
+        const budgetToCheck =
+          project.budget <= this.filterData!.budgetTo ||
+          this.filterData!.budgetTo === null;
+        const employeeCheck =
+          this.filterData!.employee === null ||
+          project.engagedEmployees.findIndex(
+            (projDesc) =>
+              projDesc.employee.id === this.filterData?.employee['id']
+          ) != -1;
+        return nameCheck && budgetFromCheck && budgetToCheck && employeeCheck;
+      });
+    }
+  }
+
+  clearFilter() {
+    this.filteredProjects = this.projects;
+    this.projectForm?.reset();
   }
 
   update(project: Project) {

@@ -1,41 +1,44 @@
-<div class="flex">
-  <div class="x">
+<div class="flex-row-center">
+  <div class="filter padding-medium">
     <form [formGroup]="projectForm" *ngIf="projectForm">
-      <div>
-        <label for="name">Name</label>
-        <input type="text" name="name" placeholder="Filter by name" formControlName="name">
-      </div>
-      <div>
-        <label for="name">Budget</label>
-        <input type="number" name="budget" placeholder="From" formControlName="budgetFrom">
-        <input type="number" name="budget" placeholder="To" formControlName="budgetTo">
-      </div>
-      <div>
-        <label for="name">Employees</label>
-        <select formControlName="employee" [compareWith]="compareEmployee">
-          <option value="" selected [style]="'color: grey;'">Select Employee</option>
-          <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " +
-            employee.lastName}}
-          </option>
-        </select>
+      <div class="grid">
+        <div class="flex-row-start">
+          <label for="name">Name</label>
+          <input type="text" name="name" placeholder="Filter by name" formControlName="name">
+        </div>
+        <div class="flex-row-start">
+          <label for="budget">Budget</label>
+          <input type="number" name="budget" placeholder="From" formControlName="budgetFrom">
+          <input type="number" name="budget" placeholder="To" formControlName="budgetTo">
+        </div>
+        <div class="flex-row-start">
+          <label for="employee">Employees</label>
+          <select formControlName="employee" [compareWith]="compareEmployee">
+            <!-- <option value="" selected [style]="'color: grey;'">Select Employee</option> -->
+            <option *ngFor="let employee of employees" [ngValue]="employee">{{employee.firstName + " " +
+              employee.lastName}}
+            </option>
+          </select>
+        </div>
       </div>
     </form>
+    <button (click)="clearFilter()">Clear Filter</button>
   </div>
-  <div class="x">
+  <div class="list padding-medium">
     <table>
-      <tr>
+      <tr class="header">
         <th>ID</th>
         <th>Name</th>
         <th>Budget</th>
       </tr>
-      <tr *ngFor="let project of filteredProjects">
+      <tr class="data" *ngFor="let project of filteredProjects">
         <td>{{project.id}}</td>
         <td>{{project.name}}</td>
         <td>{{project.budget | currency}}</td>
         <td>
-          <button (click)="update(project)">Update</button>
-          <button (click)="view(project)">View</button>
-          <button (click)="remove(project)">Remove</button>
+          <button class="update" (click)="update(project)">Update</button>
+          <button class="view" (click)="view(project)">View</button>
+          <button class="delete" (click)="remove(project)">Remove</button>
         </td>
       </tr>
     </table>
