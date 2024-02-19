@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Employee } from '../models/Employee.model';
 import { environment } from 'src/environments/environment';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -35,6 +35,14 @@ export class EmployeeService {
     employees.splice(index, 1, employee);
     this.storage.setItem('employees', JSON.stringify(employees));
     return this.findById(employee.id);
+  }
+
+  deleteEmployee(id: number): Observable<number> {
+    let employees: Employee[] = JSON.parse(this.storage.getItem('employees')!);
+    let i = employees.findIndex((e) => e.id === id);
+    employees.splice(i, 1);
+    this.storage.setItem('employees', JSON.stringify(employees));
+    return of(i);
   }
 
   get storage() {

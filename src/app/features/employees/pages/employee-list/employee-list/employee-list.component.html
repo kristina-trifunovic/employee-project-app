@@ -1,17 +1,21 @@
-<table>
-  <tr>
-    <th>First name</th>
-    <th>Last name</th>
-    <th>Experience</th>
-  </tr>
-  <tr *ngFor="let employee of employees">
-    <td>{{employee.firstName}}</td>
-    <td>{{employee.lastName}}</td>
-    <td>{{employee.seniority}}</td>
-    <td>
-      <button></button>
-      <button></button>
-      <button></button>
-    </td>
-  </tr>
-</table>
+<div class="flex-row-center">
+  <div class="padding-medium">
+    <table>
+      <tr class="header">
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Experience</th>
+      </tr>
+      <tr class="data" *ngFor="let employee of employees">
+        <td>{{employee.firstName}}</td>
+        <td>{{employee.lastName}}</td>
+        <td>{{employee.seniority}}</td>
+        <td>
+          <button class="update" (click)="update(employee)">Update</button>
+          <button class="view" (click)="view(employee)">View</button>
+          <button class="delete" (click)="remove(employee)">Remove</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
