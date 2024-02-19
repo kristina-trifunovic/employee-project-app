@@ -31,7 +31,7 @@
         <th>Name</th>
         <th>Budget</th>
       </tr>
-      <tr class="data" *ngFor="let project of filteredProjects">
+      <tr updateProject [projectId]="project.id" class="data" *ngFor="let project of filteredProjects">
         <td>{{project.id}}</td>
         <td>{{project.name}}</td>
         <td>{{project.budget | currency}}</td>
