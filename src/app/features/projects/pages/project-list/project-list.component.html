@@ -1,7 +1,7 @@
 <div class="flex-row-center">
   <div class="filter padding-medium">
     <form [formGroup]="projectForm" *ngIf="projectForm">
-      <div class="grid">
+      <div>
         <div class="flex-row-start">
           <label for="name">Name</label>
           <input type="text" name="name" placeholder="Filter by name" formControlName="name">
@@ -31,9 +31,9 @@
         <th>Name</th>
         <th>Budget</th>
       </tr>
-      <tr updateProject [projectId]="project.id" class="data" *ngFor="let project of filteredProjects">
+      <tr class="data" *ngFor="let project of filteredProjects">
         <td>{{project.id}}</td>
-        <td>{{project.name}}</td>
+        <td updateProject [projectId]="project.id">{{project.name}}</td>
         <td>{{project.budget | currency}}</td>
         <td>
           <button class="update" (click)="update(project)">Update</button>
@@ -45,21 +45,34 @@
   </div>
 </div>
 
-<p><span>{{showProject?.name}}</span>
+<!-- <p><span>{{showProject?.name}}</span>
   <span>{{showProject?.engagedEmployees | engagedEmployees: rolesToDisplay | json}}</span><br>
   <span *ngIf="showProject">Num of developers: {{showProject.engagedEmployees | countDevelopers }}</span><br>
   <span *ngIf="showProject">Num of employees: {{showProject.engagedEmployees | countAnalysts }}</span>
-</p>
+</p> -->
 
-<div class="modal-overlay" [ngClass]="{ 'show': showModal }">
-  <div class="modal">
+<dialog [open]="showModal" class="modal"> <!-- mainContent -->
+  <div> <!-- box -->
     <div class="modal-header">
-      <h2>Modal Title</h2>
+      <h2>{{showProject?.name}}</h2>
       <span class="close-button" (click)="closeModal()">X</span>
     </div>
     <div class="modal-content">
-      <!-- Your modal content goes here -->
-      <p>This is your modal content.</p>
+      <div>
+        <span>Engaged employees</span>
+        <ul>
+          <li *ngFor="let projDesc of showProject?.engagedEmployees | engagedEmployees: rolesToDisplay">
+            {{projDesc.employee.firstName + " " + projDesc.employee.lastName + " | " + projDesc.role}}</li>
+        </ul>
+      </div>
+      <div>
+        <span>Number of developers</span><br>
+        <span>{{showProject?.engagedEmployees | countDevelopers }}</span>
+      </div>
+      <div>
+        <span>Number of employees</span><br>
+        <span>{{showProject?.engagedEmployees | countAnalysts }}</span>
+      </div>
     </div>
   </div>
-</div>
+</dialog>

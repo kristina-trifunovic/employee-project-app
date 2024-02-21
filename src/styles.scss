@@ -2,6 +2,15 @@
   --dark-blue-color: #002f53;
 }
 
+.flex-column-center {
+  display: flex;
+  /* flex-direction: column;
+  flex-wrap: wrap; */
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 .flex-row-center {
   display: flex;
   /* flex-direction: row;
@@ -71,6 +80,10 @@ button:hover {
   cursor: pointer;
 }
 
+.submit {
+  padding: 0.5em 1.5em;
+}
+
 option:hover {
   background-color: var(--dark-blue-color);
 }
@@ -108,4 +121,18 @@ table {
 
 .delete:hover {
   background-color: rgb(86, 3, 3);
+}
+
+.card-layout {
+  padding: 1em 0em;
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+
+  .card {
+    margin: 0.3em;
+    padding: 0.3em;
+    border: 1px solid rgb(179, 179, 179);
+    border-radius: 15px;
+  }
 }
