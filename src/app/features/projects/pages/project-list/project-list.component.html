@@ -45,34 +45,28 @@
   </div>
 </div>
 
-<!-- <p><span>{{showProject?.name}}</span>
-  <span>{{showProject?.engagedEmployees | engagedEmployees: rolesToDisplay | json}}</span><br>
-  <span *ngIf="showProject">Num of developers: {{showProject.engagedEmployees | countDevelopers }}</span><br>
-  <span *ngIf="showProject">Num of employees: {{showProject.engagedEmployees | countAnalysts }}</span>
-</p> -->
-
-<dialog [open]="showModal" class="modal"> <!-- mainContent -->
-  <div> <!-- box -->
-    <div class="modal-header">
-      <h2>{{showProject?.name}}</h2>
-      <span class="close-button" (click)="closeModal()">X</span>
-    </div>
-    <div class="modal-content">
-      <div>
-        <span>Engaged employees</span>
-        <ul>
-          <li *ngFor="let projDesc of showProject?.engagedEmployees | engagedEmployees: rolesToDisplay">
-            {{projDesc.employee.firstName + " " + projDesc.employee.lastName + " | " + projDesc.role}}</li>
-        </ul>
+<div class="modal-backdrop" *ngIf="showModal">
+  <dialog [open]="showModal" [ngClass]="{'show': showModal}" class="modal">
+    <div>
+      <div class="modal-header">
+        <h2>{{showProject?.name}}</h2>
+        <span class="close-button" (click)="closeModal()">&times;</span>
       </div>
-      <div>
-        <span>Number of developers</span><br>
-        <span>{{showProject?.engagedEmployees | countDevelopers }}</span>
-      </div>
-      <div>
-        <span>Number of employees</span><br>
-        <span>{{showProject?.engagedEmployees | countAnalysts }}</span>
+      <div class="modal-content">
+        <div>
+          <span>Engaged employees</span>
+          <ul>
+            <li *ngFor="let projDesc of showProject?.engagedEmployees | engagedEmployees: rolesToDisplay">
+              {{projDesc.employee.firstName + " " + projDesc.employee.lastName + " | " + projDesc.role}}</li>
+          </ul>
+        </div>
+        <div>
+          <p>Number of developers: {{showProject?.engagedEmployees | countDevelopers }}</p>
+        </div>
+        <div>
+          <p>Number of employees: {{showProject?.engagedEmployees | countAnalysts }}</p>
+        </div>
       </div>
     </div>
-  </div>
-</dialog>
+  </dialog>
+</div>
