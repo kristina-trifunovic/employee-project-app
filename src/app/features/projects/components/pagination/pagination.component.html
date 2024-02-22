@@ -1,0 +1,6 @@
+<div class="pagination">
+  <button *ngFor="let page of pagesCount" [ngClass]="{ 'page-item': true, 'active': currentPage === page}"
+    (click)="pageChange.emit(page)">
+    {{ page }}
+  </button>
+</div>

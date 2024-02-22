@@ -1,0 +1,14 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  button {
+    padding: 0.5em 0.8em;
+  }
+
+  .active {
+    background-color: var(--medium-blue-color);
+    color: white;
+  }
+}

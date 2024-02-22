@@ -42,6 +42,9 @@
         </td>
       </tr>
     </table>
+    <pagination [totalItems]="totalItems" [currentPage]="currentPage" [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </pagination>
   </div>
 </div>
 

@@ -33,6 +33,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   showProject?: Project;
   rolesToDisplay = [ProjectRole.PROJECT_MANAGER, ProjectRole.TEAM_LEAD];
+  totalItems = 10;
+  itemsPerPage = 5;
+  currentPage = 1;
 
   constructor(
     private projectService: ProjectService,
@@ -61,6 +64,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .subscribe((projects) => {
         this.projects = projects;
         this.filteredProjects = [...this.projects];
+        this.totalItems = projects.length;
       });
   }
 
@@ -193,5 +197,10 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  onPageChange(pageNumber: number) {
+    this.currentPage = pageNumber;
+    console.log(pageNumber);
   }
 }

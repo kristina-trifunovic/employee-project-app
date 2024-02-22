@@ -67,6 +67,17 @@
         "role": "Developer",
         "startDate": "23.06.2023",
         "engagementDuration": 24
+      },
+      {
+        "employee": {
+          "id": 1,
+          "firstName": "Liam",
+          "lastName": "Smith",
+          "seniority": "Medior"
+        },
+        "role": "Business Analyst",
+        "startDate": "23.06.2023",
+        "engagementDuration": 12
       }
     ]
   }
