@@ -16,7 +16,11 @@ export class PaginationComponent {
   }
 
   get pagesCount(): number[] {
-    return [1, 2, 3, 4, 5];
+    const pages = [];
+    for (let i = 0; i < this.totalPages; i++) {
+      pages.push(i + 1);
+    }
+    return pages;
   }
 
   setPage(page: number): void {

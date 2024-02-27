@@ -34,7 +34,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   showProject?: Project;
   rolesToDisplay = [ProjectRole.PROJECT_MANAGER, ProjectRole.TEAM_LEAD];
   totalItems = 10;
-  itemsPerPage = 5;
+  itemsPerPage = 2;
   currentPage = 1;
 
   constructor(
@@ -63,7 +63,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((projects) => {
         this.projects = projects;
-        this.filteredProjects = [...this.projects];
+        // this.filteredProjects = [...this.projects];
+        this.filteredProjects = projects.slice(0, this.itemsPerPage);
         this.totalItems = projects.length;
       });
   }
@@ -199,8 +200,16 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.showModal = false;
   }
 
+  // TODO fix to this.projects be this.filteredProjects
   onPageChange(pageNumber: number) {
     this.currentPage = pageNumber;
-    console.log(pageNumber);
+    const startingPosition =
+      pageNumber == 1 ? 0 : pageNumber * this.itemsPerPage - 1;
+    this.filteredProjects = this.projects?.slice(
+      startingPosition,
+      startingPosition + this.itemsPerPage
+    );
+    console.log('startingPosition', startingPosition);
+    console.log('this.filteredProjects', this.filteredProjects);
   }
 }
