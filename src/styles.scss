@@ -19,6 +19,9 @@
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
+  .filter {
+    align-self: flex-start;
+  }
 }
 
 .padding-medium {

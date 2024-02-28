@@ -5,6 +5,7 @@ import { Project } from './core/models/Project.model';
 import { EmployeeService } from './core/services/employee.service';
 import { Employee } from './core/models/Employee.model';
 import { Subject } from 'rxjs';
+import { StorageProps } from './core/enums/enums';
 
 @Component({
   selector: 'app-root',
@@ -47,18 +48,18 @@ export class AppComponent implements OnInit, OnDestroy {
   loadInitialData() {
     this.projectService.findAll().subscribe((projects) => {
       this.projects = projects;
-      if (this.projectService.storage.getItem('projects') == null)
+      if (this.projectService.storage.getItem(StorageProps.PROJECTS) == null)
         this.projectService.storage.setItem(
-          'projects',
+          StorageProps.PROJECTS,
           JSON.stringify(projects)
         );
     });
 
     this.employeeService.findAll().subscribe((employees) => {
       this.employees = employees;
-      if (this.projectService.storage.getItem('employees') == null)
+      if (this.projectService.storage.getItem(StorageProps.EMPLOYEES) == null)
         this.projectService.storage.setItem(
-          'employees',
+          StorageProps.EMPLOYEES,
           JSON.stringify(employees)
         );
     });

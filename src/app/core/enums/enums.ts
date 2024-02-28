@@ -16,3 +16,9 @@ export enum Mode {
   ADD = 'ADD',
   UPDATE = 'UPDATE',
 }
+
+export enum StorageProps {
+  PROJECT_PAGE = 'projectPage',
+  PROJECTS = 'projects',
+  EMPLOYEES = 'employees',
+}

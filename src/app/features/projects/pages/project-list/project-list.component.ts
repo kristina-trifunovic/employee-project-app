@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
-import { ProjectRole } from 'src/app/core/enums/enums';
+import { ProjectRole, StorageProps } from 'src/app/core/enums/enums';
 import { Employee } from 'src/app/core/models/Employee.model';
 import { Project } from 'src/app/core/models/Project.model';
 import { EmployeeService } from 'src/app/core/services/employee.service';
@@ -35,7 +35,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   rolesToDisplay = [ProjectRole.PROJECT_MANAGER, ProjectRole.TEAM_LEAD];
   totalItems = 10;
   itemsPerPage = 2;
-  currentPage = 1;
+  pageFromStorage = Number(localStorage.getItem(StorageProps.PROJECT_PAGE));
+  currentPage = this.pageFromStorage == null ? 1 : this.pageFromStorage;
 
   constructor(
     private projectService: ProjectService,
@@ -50,6 +51,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.loadProjects();
     this.loadEmployees();
     this.filterProjects();
+    if (localStorage.getItem(StorageProps.PROJECT_PAGE) == null)
+      localStorage.setItem(StorageProps.PROJECT_PAGE, '1');
   }
 
   ngOnDestroy(): void {
@@ -63,8 +66,11 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((projects) => {
         this.projects = projects;
-        // this.filteredProjects = [...this.projects];
-        this.filteredProjects = projects.slice(0, this.itemsPerPage);
+        const startingPosition = (this.currentPage - 1) * this.itemsPerPage;
+        this.filteredProjects = projects.slice(
+          startingPosition,
+          startingPosition + this.itemsPerPage
+        );
         this.totalItems = projects.length;
       });
   }
@@ -134,8 +140,10 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       budgetTo: this.projectForm?.get('budgetTo')?.value,
       employee: this.projectForm?.get('employee')?.value,
     };
-    if (this.isFilterEmpty()) this.filteredProjects = [...this.projects!];
-    else this.filterList();
+    if (this.isFilterEmpty()) {
+      this.filteredProjects = [...this.projects!];
+      this.onPageChange(this.currentPage);
+    } else this.filterList();
   }
 
   compareEmployee(first?: Employee, second?: Employee): boolean {
@@ -143,21 +151,27 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   isFilterEmpty() {
+    const name = this.filterData?.name;
+    const employee = this.filterData?.employee;
+    const budgetFrom = this.filterData?.budgetFrom;
+    const budgetTo = this.filterData?.budgetTo;
     return (
-      this.filterData?.name === '' &&
-      (this.filterData.employee == null ||
-        this.filterData.employee == undefined) &&
-      this.filterData.budgetFrom.toString() === '' &&
-      this.filterData.budgetTo.toString() === ''
+      (name === '' || name == null) &&
+      (employee == null || employee == undefined) &&
+      (budgetFrom?.toString() === '' || budgetFrom == null) &&
+      (budgetTo?.toString() === '' || budgetTo == null)
     );
   }
 
   filterList() {
     if (!this.isFilterEmpty()) {
       this.filteredProjects = this.projects?.filter((project) => {
-        const nameCheck = project.name
-          .toLowerCase()
-          .includes(this.filterData!.name.toLowerCase());
+        const nameCheck =
+          this.filterData?.name == null
+            ? true
+            : project.name
+                .toLowerCase()
+                .includes(this.filterData!.name.toLowerCase());
         const budgetFromCheck =
           project.budget >= this.filterData!.budgetFrom ||
           this.filterData!.budgetFrom === null;
@@ -173,10 +187,12 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         return nameCheck && budgetFromCheck && budgetToCheck && employeeCheck;
       });
     }
+    this.onPageChange(this.currentPage, this.filteredProjects);
   }
 
   clearFilter() {
     this.filteredProjects = this.projects;
+    this.onPageChange(this.currentPage);
     this.projectForm?.reset();
   }
 
@@ -200,16 +216,13 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.showModal = false;
   }
 
-  // TODO fix to this.projects be this.filteredProjects
-  onPageChange(pageNumber: number) {
+  onPageChange(pageNumber: number, projects?: Project[]) {
     this.currentPage = pageNumber;
-    const startingPosition =
-      pageNumber == 1 ? 0 : pageNumber * this.itemsPerPage - 1;
-    this.filteredProjects = this.projects?.slice(
+    const startingPosition = (pageNumber - 1) * this.itemsPerPage;
+    const pList = projects ? projects : this.projects;
+    this.filteredProjects = pList?.slice(
       startingPosition,
       startingPosition + this.itemsPerPage
     );
-    console.log('startingPosition', startingPosition);
-    console.log('this.filteredProjects', this.filteredProjects);
   }
 }

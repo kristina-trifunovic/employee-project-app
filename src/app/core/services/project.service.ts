@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Project } from '../models/Project.model';
+import { StorageProps } from '../enums/enums';
 
 @Injectable({
   providedIn: 'root',
@@ -23,25 +24,29 @@ export class ProjectService {
   }
 
   addProject(project: Project): Observable<Project | undefined> {
-    let projects = JSON.parse(this.storage.getItem('projects')!);
+    let projects = JSON.parse(this.storage.getItem(StorageProps.PROJECTS)!);
     projects.push(project);
-    this.storage.setItem('projects', JSON.stringify(projects));
+    this.storage.setItem(StorageProps.PROJECTS, JSON.stringify(projects));
     return this.findById(project.id);
   }
 
   updateProject(project: Project) {
-    let projects: Project[] = JSON.parse(this.storage.getItem('projects')!);
+    let projects: Project[] = JSON.parse(
+      this.storage.getItem(StorageProps.PROJECTS)!
+    );
     let index = projects.findIndex((e) => e.id === project.id);
     projects.splice(index, 1, project);
-    this.storage.setItem('projects', JSON.stringify(projects));
+    this.storage.setItem(StorageProps.PROJECTS, JSON.stringify(projects));
     return this.findById(project.id);
   }
 
   deleteProject(id: string): Observable<number> {
-    let projects: Project[] = JSON.parse(this.storage.getItem('projects')!);
+    let projects: Project[] = JSON.parse(
+      this.storage.getItem(StorageProps.PROJECTS)!
+    );
     let i = projects.findIndex((p) => p.id === id);
     projects.splice(i, 1);
-    this.storage.setItem('projects', JSON.stringify(projects));
+    this.storage.setItem(StorageProps.PROJECTS, JSON.stringify(projects));
     return of(i);
   }
 

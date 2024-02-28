@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { StorageProps } from 'src/app/core/enums/enums';
 
 @Component({
   selector: 'pagination',
@@ -23,9 +24,8 @@ export class PaginationComponent {
     return pages;
   }
 
-  setPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
+  changePage(page: number): void {
+    localStorage.setItem(StorageProps.PROJECT_PAGE, page.toString());
+    this.pageChange.emit(page);
   }
 }
