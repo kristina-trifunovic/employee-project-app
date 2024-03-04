@@ -224,5 +224,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       startingPosition,
       startingPosition + this.itemsPerPage
     );
+    this.totalItems = pList!.length;
   }
 }

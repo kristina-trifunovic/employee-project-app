@@ -2,4 +2,15 @@ form {
   button {
     align-self: center;
   }
+
+  .project-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+
+    .errors {
+      padding: 0.5em;
+      color: rgb(163, 0, 0);
+    }
+  }
 }

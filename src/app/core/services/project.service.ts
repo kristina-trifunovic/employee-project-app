@@ -4,6 +4,7 @@ import { Observable, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Project } from '../models/Project.model';
 import { StorageProps } from '../enums/enums';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +26,14 @@ export class ProjectService {
 
   addProject(project: Project): Observable<Project | undefined> {
     let projects = JSON.parse(this.storage.getItem(StorageProps.PROJECTS)!);
+    project.id = uuid();
     projects.push(project);
     this.storage.setItem(StorageProps.PROJECTS, JSON.stringify(projects));
     return this.findById(project.id);
   }
 
   updateProject(project: Project) {
+    project.id = uuid();
     let projects: Project[] = JSON.parse(
       this.storage.getItem(StorageProps.PROJECTS)!
     );

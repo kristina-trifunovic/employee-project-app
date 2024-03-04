@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Component, Inject, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
@@ -14,6 +13,7 @@ import { Employee } from 'src/app/core/models/Employee.model';
 import { Project, ProjectDescription } from 'src/app/core/models/Project.model';
 import { EmployeeService } from 'src/app/core/services/employee.service';
 import { ProjectService } from 'src/app/core/services/project.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-project-form',
@@ -21,7 +21,6 @@ import { ProjectService } from 'src/app/core/services/project.service';
   styleUrls: ['./project-form.component.scss'],
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
-  [x: string]: any;
   projectForm?: FormGroup;
   project?: Project;
   mode = '';
@@ -30,6 +29,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   roles = Object.values(ProjectRole);
   filteredRoles = [...this.roles];
   filteredEmployees: Employee[] = [];
+  startDate: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -43,6 +43,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.mode = this.activeRoute.snapshot.data['mode'];
     this.project = this.activeRoute.snapshot.data['project'];
+    if (this.project !== undefined) {
+      this.startDate = moment(this.project?.startDate, 'DD.MM.YYYY').format(
+        'YYYY-MM-DD'
+      );
+    }
     this.buildForm(this.project);
     this.loadEmployees();
   }
@@ -64,7 +69,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   buildForm(project?: Project): void {
     this.projectForm = this.fb.group({
-      id: [project?.id], // TODO add a auto generated ID
+      id: [project?.id],
       name: [
         project?.name,
         [
@@ -74,7 +79,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         ],
       ],
       budget: [project?.budget, [Validators.required, Validators.min(1)]],
-      startDate: [project?.startDate],
+      startDate: [this.startDate],
     });
     this.projectForm.setControl('engagedEmployees', this.fb.array([]));
     if (project === undefined) this.addEngagedEmployee();
@@ -110,9 +115,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const project = this.projectForm?.value;
-    console.log(project);
+    const formattedDate = moment(this.startDate, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    );
+    this.project!.startDate = moment(formattedDate).toDate();
     this.addOrUpdateProject(project).subscribe((project) => {
-      console.log(`${this.mode} mode project: `, project);
       this.router.navigate(['project']);
     });
   }
@@ -154,6 +161,14 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         (employee) => employee.seniority === Seniority.SENIOR
       );
     else this.filteredEmployees = [...this.employees!];
+  }
+
+  formCheck(formControl: string, validation: string) {
+    return (
+      (this.projectForm?.get(formControl)?.touched ||
+        this.projectForm?.get(formControl)?.dirty) &&
+      this.projectForm.get(formControl)?.hasError(validation)
+    );
   }
 
   compareEmployee(first?: Employee, second?: Employee): boolean {
