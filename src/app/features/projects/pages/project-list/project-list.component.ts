@@ -21,6 +21,7 @@ import { ProjectService } from 'src/app/core/services/project.service';
 export class ProjectListComponent implements OnInit, OnDestroy {
   projects?: Project[];
   filteredProjects?: Project[];
+  projectPage?: Project[];
   employees?: Employee[];
   destroy$: Subject<boolean> = new Subject();
   projectForm?: FormGroup;
@@ -66,8 +67,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((projects) => {
         this.projects = projects;
+        this.filteredProjects = projects;
         const startingPosition = (this.currentPage - 1) * this.itemsPerPage;
-        this.filteredProjects = projects.slice(
+        this.projectPage = projects.slice(
           startingPosition,
           startingPosition + this.itemsPerPage
         );
@@ -187,7 +189,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         return nameCheck && budgetFromCheck && budgetToCheck && employeeCheck;
       });
     }
-    this.onPageChange(this.currentPage, this.filteredProjects);
+    this.onPageChange(this.currentPage);
   }
 
   clearFilter() {
@@ -216,14 +218,13 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.showModal = false;
   }
 
-  onPageChange(pageNumber: number, projects?: Project[]) {
+  onPageChange(pageNumber: number) {
     this.currentPage = pageNumber;
     const startingPosition = (pageNumber - 1) * this.itemsPerPage;
-    const pList = projects ? projects : this.projects;
-    this.filteredProjects = pList?.slice(
+    this.projectPage = this.filteredProjects?.slice(
       startingPosition,
       startingPosition + this.itemsPerPage
     );
-    this.totalItems = pList!.length;
+    this.totalItems = this.filteredProjects!.length;
   }
 }
