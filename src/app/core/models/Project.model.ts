@@ -5,13 +5,13 @@ export interface Project {
   id: string;
   name: string;
   budget: number;
-  startDate: Date;
+  startDate: Date | string;
   engagedEmployees: ProjectDescription[];
 }
 
 export interface ProjectDescription {
   employee: Employee;
   role: ProjectRole;
-  startDate: Date;
+  startDate: Date | string;
   engagementDuration: number;
 }

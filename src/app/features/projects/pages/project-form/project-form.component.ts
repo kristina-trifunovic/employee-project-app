@@ -29,7 +29,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   roles = Object.values(ProjectRole);
   filteredRoles = [...this.roles];
   filteredEmployees: Employee[] = [];
-  startDate: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -44,9 +43,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     this.mode = this.activeRoute.snapshot.data['mode'];
     this.project = this.activeRoute.snapshot.data['project'];
     if (this.project !== undefined) {
-      this.startDate = moment(this.project?.startDate, 'DD.MM.YYYY').format(
-        'YYYY-MM-DD'
-      );
+      this.project.startDate = moment(
+        this.project?.startDate,
+        'DD.MM.YYYY'
+      ).format('YYYY-MM-DD');
     }
     this.buildForm(this.project);
     this.loadEmployees();
@@ -79,13 +79,16 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         ],
       ],
       budget: [project?.budget, [Validators.required, Validators.min(1)]],
-      startDate: [this.startDate],
+      startDate: [project?.startDate],
     });
     this.projectForm.setControl('engagedEmployees', this.fb.array([]));
     if (project === undefined) this.addEngagedEmployee();
-    project?.engagedEmployees.forEach((projDesc) =>
-      this.addEngagedEmployee(projDesc)
-    );
+    project?.engagedEmployees.forEach((projDesc) => {
+      projDesc.startDate = moment(projDesc.startDate, 'DD.MM.YYYY').format(
+        'YYYY-MM-DD'
+      );
+      this.addEngagedEmployee(projDesc);
+    });
   }
 
   addEngagedEmployee(projDesc?: ProjectDescription) {
@@ -114,11 +117,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const project = this.projectForm?.value;
-    const formattedDate = moment(this.startDate, 'YYYY-MM-DD').format(
+    const project: Project = this.projectForm?.value;
+    project.startDate = moment(project.startDate, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     );
-    this.project!.startDate = moment(formattedDate).toDate();
+    project.engagedEmployees.forEach((projDesc) => {
+      projDesc.startDate = moment(projDesc.startDate, 'YYYY-MM-DD').format(
+        'DD.MM.YYYY'
+      );
+    });
     this.addOrUpdateProject(project).subscribe((project) => {
       this.router.navigate(['project']);
     });

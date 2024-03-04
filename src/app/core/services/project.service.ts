@@ -13,9 +13,12 @@ export class ProjectService {
   constructor(private httpClient: HttpClient) {}
 
   findAll(): Observable<Project[]> {
-    return this.httpClient.get<Project[]>(
-      `${environment.serverUrl}/projects.json`
-    );
+    const projects = JSON.parse(this.storage.getItem(StorageProps.PROJECTS)!);
+    return projects
+      ? of(projects)
+      : this.httpClient.get<Project[]>(
+          `${environment.serverUrl}/projects.json`
+        );
   }
 
   findById(id: string): Observable<Project | undefined> {
@@ -33,7 +36,7 @@ export class ProjectService {
   }
 
   updateProject(project: Project) {
-    project.id = uuid();
+    // project.id = uuid();
     let projects: Project[] = JSON.parse(
       this.storage.getItem(StorageProps.PROJECTS)!
     );

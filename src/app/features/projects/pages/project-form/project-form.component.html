@@ -1,14 +1,28 @@
 <div>
   <form class="flex-column-center" [formGroup]="projectForm" *ngIf="projectForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="name">Name:</label>
-      <input type="text" id="name" formControlName="name">
+    <div class="project-info">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" formControlName="name">
+      </div>
+      <div>
+        <label for="budget">Budget:</label>
+        <input type="number" id="budget" formControlName="budget">
+      </div>
+      <div>
+        <label for=" startDate">Start Date:</label>
+        <input type="date" id="startDate" formControlName="startDate">
+      </div>
 
-      <label for="budget">Budget:</label>
-      <input type="number" id="budget" formControlName="budget">
-
-      <label for="startDate">Start Date:</label>
-      <input type="date" id="startDate" formControlName="startDate">
+      <div class="errors">
+        <span *ngIf="formCheck('name', 'required')">Name is required.</span>
+        <span *ngIf="formCheck('name', 'minlength')">Name should have minimum 3 characters.</span>
+        <span *ngIf="formCheck('name', 'maxlength')">Name should have maximum 30 characters.</span>
+      </div>
+      <div class="errors">
+        <span *ngIf="formCheck('budget', 'required')">Budget is required.</span>
+        <span *ngIf="formCheck('budget', 'min')">Budget should minimum be 1.</span>
+      </div>
     </div>
     <div class="card-layout" formArrayName="engagedEmployees">
       <div class="card" *ngFor="let projectDescription of engagedEmployees.controls; let i = index" [formGroupName]="i">
@@ -41,7 +55,8 @@
       </div>
     </div>
     <div>
-      <button class="submit" type="submit" [disabled]="projectForm.invalid">Submit</button>
+      <button class="submit" type="submit">Submit</button>
+      <!-- <button class="submit" type="submit" [disabled]="!projectForm.valid && projectForm.touched">Submit</button> -->
     </div>
   </form>
 </div>
